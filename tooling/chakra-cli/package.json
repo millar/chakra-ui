@@ -1,0 +1,37 @@
+{
+  "name": "chakra-cli",
+  "version": "1.0.0",
+  "description": "Command line interface for rapid Chakra UI integration for React, Vue and Next",
+  "bin": {
+    "chakra": "bin/chakra.js"
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "keywords": [
+    "chakra",
+    "chakra-ui",
+    "cli"
+  ],
+  "author": "Kelvin Omereshone <kelvinomereshone@gmail.com> (https://twitter.com/dominus_kelvin)",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "clear": "^0.1.0",
+    "commander": "^5.1.0",
+    "consola": "^2.12.1",
+    "figlet": "^1.4.0",
+    "fs-mkdirp-stream": "^1.0.0",
+    "github-content": "^1.0.1",
+    "github-trees": "^0.2.0",
+    "leven": "^3.1.0",
+    "lodash": "^4.17.15",
+    "minimist": "^1.2.5",
+    "mkdirp": "^1.0.4",
+    "slash": "^3.0.0",
+    "touch": "^3.1.0"
+  }
+}

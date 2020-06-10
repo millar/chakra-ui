@@ -1,0 +1,59 @@
+'use strict';
+
+var fs = require('fs');
+var { dirname } = require('path');
+var { promisify } = require('util');
+
+var ghTree = require('github-trees');
+var GithubContent = require('github-content');
+var mkdirp = require('fs-mkdirp-stream/mkdirp');
+
+function getFiles(owner, repo, branch, paths) {
+  var client = new GithubContent({ owner, repo, branch });
+
+  // Call with client as `this`
+  return promisify(client.files).call(client, paths);
+}
+
+async function createDirectories(filepath) {
+  var dir = dirname(filepath);
+  return promisify(mkdirp).call(null, dir);
+}
+
+async function writeFile(filepath, contents) {
+  return promisify(fs.writeFile).call(null, filepath, contents);
+}
+
+async function output(file) {
+  await createDirectories(file.path);
+  await writeFile(file.path, file.contents);
+  fs.rename('packages', 'chakra', function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log('Successfully renamed the directory.');
+    }
+  });
+}
+
+async function fetchFiles(owner, repo, directory, options = {}) {
+  var { tree } = await ghTree(owner, repo, {
+    recursive: true,
+    sha: options.sha,
+  });
+  var paths = tree
+    .filter((node) => node.path.includes(directory) && node.type === 'blob')
+    .map((node) => node.path);
+  console.log(paths);
+  return getFiles(owner, repo, options.sha, paths);
+}
+
+async function download(owner, repo, directory, options = {}) {
+  var files = await fetchFiles(owner, repo, directory, options);
+  console.log(files);
+  await Promise.all(files.map(output));
+}
+
+module.exports = download;
+module.exports.fetchFiles = fetchFiles;
+module.exports.output = output;
