@@ -1,6 +1,6 @@
 {
   "name": "chakra-ui",
-  "private": true,
+  "version": "0.8.1",
   "workspaces": [
     "packages/*",
     "examples/*",
